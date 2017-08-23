@@ -32,17 +32,16 @@
 	Model.Metadata.Wrappers.Clear(); // Delete widget default wrappers
 	var content = Model.ContentItem.CustomCode;
 	string typeCode = content.TypeCode.Value;
-    string code = content.Code.Value;
-	if( @typeCode == "css") {
+        string code = content.Code.Value;
+	if(@typeCode == "css") {
 		using (Script.Head())
 		{    
 			<style>@Html.Raw(@content.Code.Value)</style>
 		}
-	}else{
+	} else {
 		using (Script.Foot())
 		{
 			<script type="text/javascript">@Html.Raw(@content.Code.Value)</script>
-			
 		}
 	}
 }
