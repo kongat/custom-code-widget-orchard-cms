@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Exported from Orchard-->
+<Orchard>
+  <Recipe>
+    <ExportUtc>2017-08-04T11:43:29.8063878Z</ExportUtc>
+  </Recipe>
+  <ContentDefinition>
+    <Types>
+      <CustomCode ContentTypeSettings.Creatable="False" ContentTypeSettings.Draftable="False" ContentTypeSettings.Listable="False" ContentTypeSettings.Securable="False" ContentTypeLayoutSettings.Placeable="False" Stereotype="Widget" DisplayName="CustomCode">
+        <CommonPart OwnerEditorSettings.ShowOwnerEditor="False" DateEditorSettings.ShowDateEditor="False" />
+        <CustomCode />
+        <IdentityPart />
+        <WidgetPart />
+      </CustomCode>
+    </Types>
+    <Parts>
+      <CommonPart ContentPartSettings.Attachable="True" ContentPartSettings.Description="Provides common information about a content item, such as Owner, Date Created, Date Published and Date Modified." ContentPartLayoutSettings.Placeable="True" ContentPartLayoutSettings.Placable="True" />
+      <CustomCode ContentPartSettings.Attachable="True">
+        <Code.TextField DisplayName="Code" TextFieldSettings.Hint="To this Text field place the custom code( javascript or Css ) you want to add." TextFieldSettings.Required="True" TextFieldSettings.Flavor="Textarea" />
+        <TypeCode.EnumerationField DisplayName="TypeCode" EnumerationFieldSettings.Required="True" EnumerationFieldSettings.Options="css&#xD;&#xA;js" EnumerationFieldSettings.ListMode="Dropdown" />
+      </CustomCode>
+      <IdentityPart ContentPartSettings.Attachable="True" ContentPartSettings.Description="Automatically generates a unique identity for the content item, which is required in import/export scenarios where one content item references another." />
+      <WidgetPart ContentPartSettings.Attachable="True" ContentPartSettings.Description="Turns a content type into a Widget. Note: you need to set the stereotype to &quot;Widget&quot; as well." />
+    </Parts>
+  </ContentDefinition>
+  <Content>
+    <Template Id="/Identifier=07c38b227c88431682b02be839d7f668" Status="Published">
+      <CommonPart Owner="/User.UserName=admin" CreatedUtc="2017-08-02T10:22:54.2771924Z" PublishedUtc="2017-08-04T11:41:57.1433289Z" ModifiedUtc="2017-08-04T11:41:57.1353221Z" />
+      <IdentityPart Identifier="07c38b227c88431682b02be839d7f668" />
+      <ShapePart RenderingMode="FrontEnd"><![CDATA[
+@{
+	Model.Metadata.Wrappers.Clear(); // Delete widget default wrappers
+	var content = Model.ContentItem.CustomCode;
+	string typeCode = content.TypeCode.Value;
+    string code = content.Code.Value;
+	if( @typeCode == "css") {
+		using (Script.Head())
+		{    
+			<style>@Html.Raw(@content.Code.Value)</style>
+		}
+	}else{
+		using (Script.Foot())
+		{
+			<script type="text/javascript">@Html.Raw(@content.Code.Value)</script>
+			
+		}
+	}
+}
+]]></ShapePart>
+      <TitlePart Title="Widget__CustomCode" />
+    </Template>
+  </Content>
+</Orchard>
